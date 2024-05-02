@@ -1,0 +1,17 @@
+FROM node:14 as backend
+ 
+WORKDIR /app
+ 
+COPY package*.json ./
+ 
+RUN npm install
+ 
+FROM node:14-slim
+ 
+WORKDIR /app
+ 
+COPY --from=backend /app .
+ 
+COPY . .
+ 
+CMD ["node", "index.js"]

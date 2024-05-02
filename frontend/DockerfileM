@@ -1,0 +1,18 @@
+FROM node:14 as frontend
+ 
+WORKDIR /app
+ 
+COPY package*.json ./
+ 
+RUN npm install
+ 
+FROM node:14-slim
+ 
+WORKDIR /app
+ 
+COPY --from=frontend /app .
+ 
+COPY . .
+ 
+ 
+CMD ["npm","start"]
