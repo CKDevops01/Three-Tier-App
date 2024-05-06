@@ -11,6 +11,8 @@ pipeline {
         AWS_DEFAULT_REGION= 'us-east-1'
         AWS_ACCOUNT_ID= credentials('AWS_Account_ID')
         REPO_URI= 'public.ecr.aws/y2h5i6h0'
+        AWS_ACCESS_KEY_ID= credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY= credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
         stage('Cleaning the Workspace') {
@@ -18,14 +20,12 @@ pipeline {
                 cleanWs()
                 }
             }
-        }
+        
         stage('Git Checkout') {
             steps {
                 script{
-                    git branch: 'main', url: '
-https://github.com/CKDevops01/Three-Tier-App.git'
+                    git branch: 'main', url: 'https://github.com/CKDevops01/Three-Tier-App.git'
                 }
-            }
         }
         stage('Sonarqube Analysis') {
             steps {
@@ -44,9 +44,11 @@ https://github.com/CKDevops01/Three-Tier-App.git'
         stage('Quality Check') {
             steps {
                 script{
+                    timeout(1 ,unit:'HOURS'){  
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar_cred'
                 }
             }
+          }
         }
         stage('Trivy File Scan') {
             steps {
@@ -59,23 +61,23 @@ https://github.com/CKDevops01/Three-Tier-App.git'
         stage('Docker image build') {
             steps {
                 dir('frontend'){
-                sh 'docker build -t ${AWS_ECR_REPO1} -f DockerfileM.'
+                sh 'docker build -t ${AWS_ECR_REPO1} .'
                 }
             }
         }
         stage('Docker image buil-2') {
             steps {
                 dir('backend'){
-                sh 'docker build -t ${AWS_ECR_REPO2} -f DockerfileM.'
+                sh 'docker build -t ${AWS_ECR_REPO2} .'
                 }
             }
         }
         stage('ECR image push') {
             steps {
                 dir('frontend'){
-                sh 'aws ecr-public get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin public.ecr.aws/y2h5i6h0'
-                sh 'docker tag ${AWS_ECR_REPO1}:latest public.ecr.aws/y2h5i6h0/${AWS_ECR_REPO1}:${BUILD_NUMBER}'
-                sh 'docker push public.ecr.aws/y2h5i6h0/${AWS_ECR_REPO1}:${BUILD_NUMBER}'
+                sh 'aws ecr-public get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPO_URI}'
+                sh 'docker tag ${AWS_ECR_REPO1}:latest ${REPO_URI}/${AWS_ECR_REPO1}:${BUILD_NUMBER}'
+                sh 'docker push ${REPO_URI}/${AWS_ECR_REPO1}:${BUILD_NUMBER}'
                 }
             }
         }
@@ -99,4 +101,5 @@ https://github.com/CKDevops01/Three-Tier-App.git'
             }
 
 
+}
 }
