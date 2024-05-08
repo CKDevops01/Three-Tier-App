@@ -18,13 +18,13 @@ SSH into the instance from your local machine.
 
 ***Step 3: Install AWS CLI v2***
 
-'''
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+>curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 sudo apt install unzip
 unzip awscliv2.zip
 sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin --update
 aws configure
-'''
+
 
 Step 4: Install Docker
 
