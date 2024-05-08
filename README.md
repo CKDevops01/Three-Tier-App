@@ -77,9 +77,9 @@ export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw
 export ARGO_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 ```
 
-```
->kubectl create namespace three-tier
-```
+
+> kubectl create namespace three-tier
+
 # Step 9: Install AWS Load Balancer
 
 ```bash
