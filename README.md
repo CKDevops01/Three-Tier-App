@@ -1,50 +1,57 @@
 # Three-Tier-App
 
-**Overview**
+# Overview
 
 Deploying a Three-Tier Web Application using ReactJS, NodeJS, and MongoDB, with deployment on AWS EKS.Three-Tier -App(React jS+node jS+mongodb) application deployment.
 
-**Getting Started**
+# Getting Started
 
-***Step 1: IAM Configuration***
+# Step 1: IAM Configuration
 
 Create a user eks-admin with AdministratorAccess.
 Generate Security Credentials: Access Key and Secret Access Key.
 
-***Step 2: EC2 Setup***
+# Step 2: EC2 Setup
 
 Launch an Ubuntu instance in your favourite region (eg. region ap-south-1).
 SSH into the instance from your local machine.
 
-***Step 3: Install AWS CLI v2***
+# Step 3: Install AWS CLI v2
 
-
->curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+'''bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 sudo apt install unzip
 unzip awscliv2.zip
 sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin --update
 aws configure
+'''
 
 
-Step 4: Install Docker
+# Step 4: Install Docker
 
+'''bash
 sudo apt-get update
 sudo apt install docker.io
 docker ps
 sudo chown $USER /var/run/docker.sock
+'''
 
-Step 5: Install kubectl
+# Step 5: Install kubectl
 
+''' bash
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin
 kubectl version --short --client
+'''
 
-Step 6: Install eksctl
+# Step 6: Install eksctl
 
+'''
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
+'''
 
 Step 7: Setup EKS Cluster
 
